@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.salesianostriana.jldominguez.moveright.interfaces.PropertyInteractionListener;
 import com.salesianostriana.jldominguez.moveright.model.Property;
 
@@ -40,7 +41,7 @@ public class MyPropertyRecyclerViewAdapter extends RecyclerView.Adapter<MyProper
         holder.tvRooms.setText(Integer.toString(holder.mItem.getRooms()));
         holder.tvPrice.setText(Integer.toString(holder.mItem.getPrice()));
 
-        //Glide.with(ctx).load(holder.mItem.getImg()).into(holder.ivMainImage):
+        Glide.with(ctx).load(holder.mItem.getPhotos()[0]).into(holder.ivMainImage);
 
 
 

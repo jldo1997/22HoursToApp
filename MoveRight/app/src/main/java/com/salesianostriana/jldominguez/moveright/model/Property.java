@@ -1,5 +1,8 @@
 package com.salesianostriana.jldominguez.moveright.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Property {
 
     private String id;
@@ -15,6 +18,7 @@ public class Property {
     private String city;
     private String province;
     private String loc;
+    private String[] photos;
 
     public Property() {
     }
@@ -33,6 +37,14 @@ public class Property {
         this.city = city;
         this.province = province;
         this.loc = loc;
+    }
+
+    public String[] getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(String[] images) {
+        this.photos = images;
     }
 
     public String getId() {

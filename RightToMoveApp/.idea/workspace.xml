@@ -7,57 +7,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c0118790-9dfd-4fab-8a5e-455940b53934" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/ic_launcher-web.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/java/com/salesianostriana/jldominguez/moveright/MyPropertyRecyclerViewAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/java/com/salesianostriana/jldominguez/moveright/PropertyFragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/java/com/salesianostriana/jldominguez/moveright/interfaces/PropertyInteractionListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/java/com/salesianostriana/jldominguez/moveright/model/ResponseContainer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/java/com/salesianostriana/jldominguez/moveright/retrofit/services/PropertyService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/java/com/salesianostriana/jldominguez/moveright/viewModel/PropertyViewModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/drawable/ic_euro_symbol_black_24dp.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/drawable/ic_fav_house.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/drawable/ic_favorite_35dp.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/drawable/ic_house.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/drawable/ic_logout.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/drawable/ic_map_black_24dp.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/drawable/ic_sale_house.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/drawable/roundedbutton.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/layout/fragment_property.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/layout/fragment_property_list.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/mipmap-hdpi/ic_launcher_foreground.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/mipmap-mdpi/ic_launcher_foreground.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/mipmap-xhdpi/ic_launcher_foreground.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/mipmap-xxhdpi/ic_launcher_foreground.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/mipmap-xxxhdpi/ic_launcher_foreground.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/java/com/salesianostriana/jldominguez/moveright/model/Photo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/java/com/salesianostriana/jldominguez/moveright/retrofit/services/PhotosService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../MoveRight/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../MoveRight/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MoveRight/app/src/main/java/com/salesianostriana/jldominguez/moveright/LoginActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/java/com/salesianostriana/jldominguez/moveright/LoginActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MoveRight/app/src/main/java/com/salesianostriana/jldominguez/moveright/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/java/com/salesianostriana/jldominguez/moveright/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MoveRight/app/src/main/java/com/salesianostriana/jldominguez/moveright/model/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/java/com/salesianostriana/jldominguez/moveright/model/Category.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MoveRight/app/src/main/java/com/salesianostriana/jldominguez/moveright/MyPropertyRecyclerViewAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/java/com/salesianostriana/jldominguez/moveright/MyPropertyRecyclerViewAdapter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../MoveRight/app/src/main/java/com/salesianostriana/jldominguez/moveright/model/Property.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/java/com/salesianostriana/jldominguez/moveright/model/Property.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MoveRight/app/src/main/java/com/salesianostriana/jldominguez/moveright/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/java/com/salesianostriana/jldominguez/moveright/model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MoveRight/app/src/main/res/drawable/ic_launcher_background.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/drawable/ic_launcher_background.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MoveRight/app/src/main/res/layout/activity_login.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/layout/activity_login.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MoveRight/app/src/main/res/layout/activity_signup.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/layout/activity_signup.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MoveRight/app/src/main/res/layout/app_bar_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/layout/app_bar_main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MoveRight/app/src/main/res/layout/content_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/layout/content_main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MoveRight/app/src/main/res/menu/activity_main_drawer.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/menu/activity_main_drawer.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MoveRight/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MoveRight/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MoveRight/app/src/main/res/mipmap-hdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/mipmap-hdpi/ic_launcher.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MoveRight/app/src/main/res/mipmap-hdpi/ic_launcher_round.png" beforeDir="false" afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/mipmap-hdpi/ic_launcher_round.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MoveRight/app/src/main/res/mipmap-mdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/mipmap-mdpi/ic_launcher.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MoveRight/app/src/main/res/mipmap-mdpi/ic_launcher_round.png" beforeDir="false" afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/mipmap-mdpi/ic_launcher_round.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MoveRight/app/src/main/res/mipmap-xhdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/mipmap-xhdpi/ic_launcher.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MoveRight/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png" beforeDir="false" afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MoveRight/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MoveRight/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png" beforeDir="false" afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MoveRight/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MoveRight/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png" beforeDir="false" afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MoveRight/app/src/main/res/values/dimens.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/values/dimens.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MoveRight/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/res/values/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MoveRight/app/src/main/java/com/salesianostriana/jldominguez/moveright/viewModel/PropertyViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MoveRight/app/src/main/java/com/salesianostriana/jldominguez/moveright/viewModel/PropertyViewModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MoveRight/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../MoveRight/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.iml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -84,6 +41,7 @@
     <session id="-1505058848">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
+          <entry key="project.closed" value="1" />
           <entry key="project.open.time.35" value="1" />
           <entry key="project.opened" value="1" />
         </counts>
@@ -141,7 +99,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-31" />
     <option name="y" value="4" />
     <option name="width" value="1386" />
@@ -288,7 +246,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="784" extended-state="7" />
+    <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
