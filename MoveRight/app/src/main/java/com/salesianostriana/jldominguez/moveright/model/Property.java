@@ -2,10 +2,11 @@ package com.salesianostriana.jldominguez.moveright.model;
 
 public class Property {
 
+    private String id;
     private User user;
     private String title;
     private String description;
-    private double price;
+    private int price;
     private int rooms;
     private int size;
     private Category category;
@@ -18,7 +19,8 @@ public class Property {
     public Property() {
     }
 
-    public Property(User user, String title, String description, double price, int rooms, int size, Category category, String address, String zipcode, String city, String province, String loc) {
+    public Property(String id, User user, String title, String description, int price, int rooms, int size, Category category, String address, String zipcode, String city, String province, String loc) {
+        this.id = id;
         this.user = user;
         this.title = title;
         this.description = description;
@@ -31,6 +33,14 @@ public class Property {
         this.city = city;
         this.province = province;
         this.loc = loc;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public User getUser() {
@@ -57,11 +67,11 @@ public class Property {
         this.description = description;
     }
 
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 

@@ -61,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
 
                             UtilToken.setToken(LoginActivity.this, response.body().getToken());
+                            Log.d("Testing", response.body().getToken());
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             finish();
 
