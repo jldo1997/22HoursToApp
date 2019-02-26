@@ -155,4 +155,11 @@ public class MainActivity extends AppCompatActivity
     public void onClickFav() {
 
     }
+
+    @Override
+    public void onClickView(String propertyId) {
+        Intent intent = new Intent(MainActivity.this, PropertyDetailsActivity.class);
+        intent.putExtra("id", propertyId);
+        startActivity(intent);
+    }
 }

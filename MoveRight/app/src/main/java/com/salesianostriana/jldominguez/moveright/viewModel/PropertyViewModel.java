@@ -25,6 +25,7 @@ public class PropertyViewModel extends AndroidViewModel {
     private PropertyService propertyService;
     //private PhotosService photosService;
     private MutableLiveData<List<Property>> properties = new MutableLiveData<List<Property>>();
+    private MutableLiveData<Property> propertyDetails = new MutableLiveData<Property>();
     //private List<Photo> photos;
 
     public PropertyViewModel(@NonNull Application application) {
@@ -40,21 +41,7 @@ public class PropertyViewModel extends AndroidViewModel {
             @Override
             public void onResponse(Call<ResponseContainer<Property>> call, Response<ResponseContainer<Property>> response) {
                 try {
-                    //getPhotosForProperties();
-
-
                     ResponseContainer<Property> data = response.body();
-                    /*
-                    List<Property> temp = data.getRows();
-                    for(Property p : temp){
-                        for(Photo pho: photos){
-                            if(p.getId() == pho.getPropertyId()){
-                                List<Photo> tempPhotos = p.getImages();
-                                tempPhotos.add(pho);
-                                p.setImages(tempPhotos);
-                            }
-                        }
-                    }*/
                     properties.setValue(data.getRows());
                 } catch (Exception e) {
                     Log.d("onResponse", "There is an error");
@@ -68,25 +55,29 @@ public class PropertyViewModel extends AndroidViewModel {
         });
     }
 
-    /*
-    public void getPhotosForProperties() {
-        photosService = ServiceGenerator.createService(PhotosService.class);
-        Call<ResponseContainer<Photo>> call = photosService.getAllPhotos();
+    public void getPropertyDetailsFromCall(String propertyId){
+        propertyService = ServiceGenerator.createService(PropertyService.class);
+        Call<ResponseContainer<Property>> call = propertyService.getPropertyDetails(propertyId);
 
-        call.enqueue(new Callback<ResponseContainer<Photo>>() {
+        call.enqueue(new Callback<ResponseContainer<Property>>() {
             @Override
-            public void onResponse(Call<ResponseContainer<Photo>> call, Response<ResponseContainer<Photo>> response) {
-                photos = response.body().getRows();
+            public void onResponse(Call<ResponseContainer<Property>> call, Response<ResponseContainer<Property>> response) {
+                try {
+                    propertyDetails.setValue(response.body().getRows().get(0));
+                } catch (Exception e) {
+                    Log.d("onResponse", "There is an error");
+                    e.printStackTrace();
+                }
             }
 
             @Override
-            public void onFailure(Call<ResponseContainer<Photo>> call, Throwable t) {
-                Log.e("onFailurePhoto4Property", t.getMessage());
+            public void onFailure(Call<ResponseContainer<Property>> call, Throwable t) {
+                Log.e("onFailurePropertyDetail", t.getMessage());
             }
         });
+    }
 
-
-    }*/
 
     public MutableLiveData<List<Property>> getAllProperties() { return properties; }
+    public MutableLiveData<Property> getPropertyDetails() { return propertyDetails; }
 }

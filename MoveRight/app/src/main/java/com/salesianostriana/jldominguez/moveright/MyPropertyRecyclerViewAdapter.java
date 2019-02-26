@@ -40,15 +40,15 @@ public class MyPropertyRecyclerViewAdapter extends RecyclerView.Adapter<MyProper
         holder.tvTitle.setText(holder.mItem.getTitle());
         holder.tvRooms.setText(Integer.toString(holder.mItem.getRooms()));
         holder.tvPrice.setText(Integer.toString(holder.mItem.getPrice()));
-
-        Glide.with(ctx).load(holder.mItem.getPhotos()[0]).into(holder.ivMainImage);
-
+        if(holder.mItem.getPhotos() != null) {
+            Glide.with(ctx).load(holder.mItem.getPhotos()[0]).into(holder.ivMainImage);
+        }
 
 
         holder.ibFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: añadir a favoritos
+                mListener.onClickFav();
             }
         });
 
@@ -56,8 +56,7 @@ public class MyPropertyRecyclerViewAdapter extends RecyclerView.Adapter<MyProper
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
+                    mListener.onClickView(holder.mItem.getId());
                 }
             }
         });
