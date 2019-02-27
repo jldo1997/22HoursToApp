@@ -19,11 +19,12 @@ public class Property {
     private String province;
     private String loc;
     private String[] photos;
+    private boolean isFav;
 
     public Property() {
     }
 
-    public Property(String id, User user, String title, String description, int price, int rooms, int size, Category category, String address, String zipcode, String city, String province, String loc) {
+    public Property(String id, User user, String title, String description, int price, int rooms, int size, Category category, String address, String zipcode, String city, String province, String loc, boolean isFav) {
         this.id = id;
         this.user = user;
         this.title = title;
@@ -37,6 +38,15 @@ public class Property {
         this.city = city;
         this.province = province;
         this.loc = loc;
+        this.isFav = isFav;
+    }
+
+    public boolean isFav() {
+        return isFav;
+    }
+
+    public void setFav(boolean fav) {
+        isFav = fav;
     }
 
     public String[] getPhotos() {

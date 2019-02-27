@@ -25,6 +25,8 @@ public class PropertyViewModel extends AndroidViewModel {
     private PropertyService propertyService;
     //private PhotosService photosService;
     private MutableLiveData<List<Property>> properties = new MutableLiveData<List<Property>>();
+    private MutableLiveData<List<Property>> myProperties = new MutableLiveData<List<Property>>();
+    private MutableLiveData<List<Property>> favProperties = new MutableLiveData<List<Property>>();
     private MutableLiveData<Property> propertyDetails = new MutableLiveData<Property>();
     //private List<Photo> photos;
 
@@ -77,7 +79,60 @@ public class PropertyViewModel extends AndroidViewModel {
         });
     }
 
+    public void getMyPropertiesFromCall(String token){
+        propertyService = ServiceGenerator.createService(PropertyService.class, token);
+        Call<ResponseContainer<Property>> call = propertyService.getMyProperties();
+
+        call.enqueue(new Callback<ResponseContainer<Property>>() {
+            @Override
+            public void onResponse(Call<ResponseContainer<Property>> call, Response<ResponseContainer<Property>> response) {
+                try {
+                    ResponseContainer<Property> data = response.body();
+                    myProperties.setValue(data.getRows());
+                } catch (Exception e) {
+                    Log.d("onResponse", "There is an error");
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseContainer<Property>> call, Throwable t) {
+                Log.e("onFailureMyProperties", t.getMessage());
+            }
+        });
+    }
+
+    public void getFavPropertiesFromCall(String token){
+        propertyService = ServiceGenerator.createService(PropertyService.class, token);
+        Call<ResponseContainer<Property>> call = propertyService.getFavProperties();
+
+        call.enqueue(new Callback<ResponseContainer<Property>>() {
+            @Override
+            public void onResponse(Call<ResponseContainer<Property>> call, Response<ResponseContainer<Property>> response) {
+                try {
+                    ResponseContainer<Property> data = response.body();
+                    List<Property> temp = new ArrayList<>();
+                    for(Property p: data.getRows()){
+                        if(p.isFav())
+                            temp.add(p);
+                    }
+                    favProperties.setValue(temp);
+                } catch (Exception e) {
+                    Log.d("onResponse", "There is an error");
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseContainer<Property>> call, Throwable t) {
+                Log.e("onFailureFavProperties", t.getMessage());
+            }
+        });
+    }
+
 
     public MutableLiveData<List<Property>> getAllProperties() { return properties; }
     public MutableLiveData<Property> getPropertyDetails() { return propertyDetails; }
+    public MutableLiveData<List<Property>> getMyProperties() { return myProperties; }
+    public MutableLiveData<List<Property>> getFavProperties() { return favProperties; }
 }

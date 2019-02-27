@@ -14,4 +14,10 @@ public interface PropertyService {
 
     @GET("/properties/{id}")
     Call<ResponseContainer<Property>> getPropertyDetails(@Path("id") String id);
+
+    @GET("/properties/mine")
+    Call<ResponseContainer<Property>> getMyProperties();
+
+    @GET("/properties/auth")
+    Call<ResponseContainer<Property>> getFavProperties();
 }

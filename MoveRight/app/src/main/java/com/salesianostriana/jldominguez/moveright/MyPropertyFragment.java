@@ -13,36 +13,34 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.salesianostriana.jldominguez.moveright.interfaces.PropertyInteractionListener;
+import com.salesianostriana.jldominguez.moveright.interfaces.MyPropertyInteractionListener;
 import com.salesianostriana.jldominguez.moveright.model.Property;
+import com.salesianostriana.jldominguez.moveright.retrofit.UtilToken;
 import com.salesianostriana.jldominguez.moveright.viewModel.PropertyViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class PropertyFragment extends Fragment {
+public class MyPropertyFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
-    private PropertyInteractionListener mListener;
-    private PropertyViewModel propertyViewModel;
-    private MyPropertyRecyclerViewAdapter adapter;
-    private List<Property> propertyList;
+    private MyPropertyInteractionListener mListener;
+    private PropertyViewModel myPropertyViewModel;
+    private MyMyPropertyRecyclerViewAdapter myAdapter;
+    private List<Property> myPropertyList;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public PropertyFragment() {
+
+    public MyPropertyFragment() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static PropertyFragment newInstance(int columnCount) {
-        PropertyFragment fragment = new PropertyFragment();
+    public static MyPropertyFragment newInstance(int columnCount) {
+        MyPropertyFragment fragment = new MyPropertyFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -61,7 +59,7 @@ public class PropertyFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_property_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_myproperty_list, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -72,28 +70,38 @@ public class PropertyFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
+            myPropertyList = new ArrayList<>();
 
-            propertyList = new ArrayList<>();
-
-            adapter = new MyPropertyRecyclerViewAdapter(
+            myAdapter = new MyMyPropertyRecyclerViewAdapter(
                     getActivity(),
-                    R.layout.fragment_property,
-                    propertyList,
+                    R.layout.fragment_myproperty,
+                    myPropertyList,
                     mListener
             );
 
-            recyclerView.setAdapter(adapter);
+            recyclerView.setAdapter(myAdapter);
             launchViewModel();
         }
         return view;
+    }
+
+    private void launchViewModel() {
+        myPropertyViewModel = ViewModelProviders.of(getActivity()).get(PropertyViewModel.class);
+        myPropertyViewModel.getMyPropertiesFromCall(UtilToken.getToken(getActivity()));
+        myPropertyViewModel.getMyProperties().observe(getActivity(), new Observer<List<Property>>() {
+            @Override
+            public void onChanged(@Nullable List<Property> properties) {
+                myAdapter.setNewMyProperties(properties);
+            }
+        });
     }
 
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof PropertyInteractionListener) {
-            mListener = (PropertyInteractionListener) context;
+        if (context instanceof MyPropertyInteractionListener) {
+            mListener = (MyPropertyInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
@@ -107,14 +115,4 @@ public class PropertyFragment extends Fragment {
     }
 
 
-    private void launchViewModel() {
-        propertyViewModel = ViewModelProviders.of(getActivity()).get(PropertyViewModel.class);
-        propertyViewModel.getAllProperties().observe(getActivity(), new Observer<List<Property>>() {
-            @Override
-            public void onChanged(@Nullable List<Property> properties) {
-                adapter.setNewProperties(properties);
-            }
-        });
-
-    }
 }

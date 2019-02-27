@@ -17,9 +17,6 @@ public class ServiceGenerator {
     private static final String BASE_URL = "https://morning-chamber-30708.herokuapp.com";
     public static String MASTER_KEY = "hzasFUC4txHXVHHWvjkR2R7UxQ6kzBlw";
 
-    public static String jwtToken = null;
-
-
     private static Retrofit.Builder builder =
             new Retrofit.Builder()
                     .baseUrl(BASE_URL)
@@ -33,6 +30,10 @@ public class ServiceGenerator {
 
     public static <S> S createService(Class<S> serviceClass) {
         return createService(serviceClass, null, TipoAutenticacion.SIN_AUTENTICACION);
+    }
+
+    public static <S> S createService(Class<S> serviceClass, String token) {
+        return createService(serviceClass, token, TipoAutenticacion.JWT);
     }
 
 

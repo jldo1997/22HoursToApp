@@ -17,15 +17,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.salesianostriana.jldominguez.moveright.interfaces.FavPropertyInteractionListener;
+import com.salesianostriana.jldominguez.moveright.interfaces.MyPropertyInteractionListener;
 import com.salesianostriana.jldominguez.moveright.interfaces.PropertyInteractionListener;
 import com.salesianostriana.jldominguez.moveright.retrofit.UtilToken;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, PropertyInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, PropertyInteractionListener, MyPropertyInteractionListener, FavPropertyInteractionListener {
 
     MenuItem navPropertiesManage, navFavManage, navMyProManage, navLoginManage, navSignupManage, navLogoutManage;
 
     Fragment fProperty;
+    Fragment fMyProperty;
+    Fragment fFavProperty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,12 +127,23 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_properties) {
-            startActivity(new Intent(MainActivity.this, MainActivity.class));
-            finish();
+            fProperty = new PropertyFragment();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainer, fProperty, "properties")
+                    .commit();
         } else if (id == R.id.nav_myproperties) {
-
+            fMyProperty = new MyPropertyFragment();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainer, fMyProperty, "myProperties")
+                    .commit();
         } else if (id == R.id.nav_favproperties) {
-
+            fFavProperty = new FavPropertyFragment();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainer, fFavProperty, "myProperties")
+                    .commit();
         } else if (id == R.id.nav_login) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
