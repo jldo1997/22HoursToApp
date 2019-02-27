@@ -40,6 +40,7 @@ public class MyPropertyRecyclerViewAdapter extends RecyclerView.Adapter<MyProper
         holder.tvTitle.setText(holder.mItem.getTitle());
         holder.tvRooms.setText(Integer.toString(holder.mItem.getRooms()));
         holder.tvPrice.setText(Integer.toString(holder.mItem.getPrice()));
+
         if(holder.mItem.getPhotos() != null) {
             Glide.with(ctx).load(holder.mItem.getPhotos()[0]).into(holder.ivMainImage);
         }
@@ -48,7 +49,7 @@ public class MyPropertyRecyclerViewAdapter extends RecyclerView.Adapter<MyProper
         holder.ibFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onClickFav();
+                mListener.onClickFav(holder.mItem.getId());
             }
         });
 

@@ -33,10 +33,7 @@ public class FavPropertyFragment extends Fragment {
     private MyFavPropertyRecyclerViewAdapter favAdapter;
     private List<Property> favPropertyList;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
+
     public FavPropertyFragment() {
     }
 

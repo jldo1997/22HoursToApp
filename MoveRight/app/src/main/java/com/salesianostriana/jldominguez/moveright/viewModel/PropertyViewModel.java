@@ -6,6 +6,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.salesianostriana.jldominguez.moveright.model.BFContainer;
 import com.salesianostriana.jldominguez.moveright.model.Photo;
 import com.salesianostriana.jldominguez.moveright.model.Property;
 import com.salesianostriana.jldominguez.moveright.model.ResponseContainer;
@@ -16,6 +17,7 @@ import com.salesianostriana.jldominguez.moveright.retrofit.services.PropertyServ
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -59,13 +61,13 @@ public class PropertyViewModel extends AndroidViewModel {
 
     public void getPropertyDetailsFromCall(String propertyId){
         propertyService = ServiceGenerator.createService(PropertyService.class);
-        Call<ResponseContainer<Property>> call = propertyService.getPropertyDetails(propertyId);
+        Call<BFContainer<Property>> call = propertyService.getPropertyDetails(propertyId);
 
-        call.enqueue(new Callback<ResponseContainer<Property>>() {
+        call.enqueue(new Callback<BFContainer<Property>>() {
             @Override
-            public void onResponse(Call<ResponseContainer<Property>> call, Response<ResponseContainer<Property>> response) {
+            public void onResponse(Call<BFContainer<Property>> call, Response<BFContainer<Property>> response) {
                 try {
-                    propertyDetails.setValue(response.body().getRows().get(0));
+                    propertyDetails.setValue(response.body().getRows());
                 } catch (Exception e) {
                     Log.d("onResponse", "There is an error");
                     e.printStackTrace();
@@ -73,7 +75,7 @@ public class PropertyViewModel extends AndroidViewModel {
             }
 
             @Override
-            public void onFailure(Call<ResponseContainer<Property>> call, Throwable t) {
+            public void onFailure(Call<BFContainer<Property>> call, Throwable t) {
                 Log.e("onFailurePropertyDetail", t.getMessage());
             }
         });
@@ -126,6 +128,45 @@ public class PropertyViewModel extends AndroidViewModel {
             @Override
             public void onFailure(Call<ResponseContainer<Property>> call, Throwable t) {
                 Log.e("onFailureFavProperties", t.getMessage());
+            }
+        });
+    }
+
+    public void setFavProperty(String token, String propertyId){
+        propertyService = ServiceGenerator.createService(PropertyService.class, token);
+        Call<ResponseBody> call = propertyService.setFavProperty(propertyId);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Log.d("onResponseSetFav", "everyfin is awesome");
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("onFailureSetFav", t.getMessage());
+            }
+        });
+    }
+
+    public void deleteFavProperty(final String token, String propertyId) {
+        propertyService = ServiceGenerator.createService(PropertyService.class, token);
+
+        Call<ResponseBody> call = propertyService.deleteFavProperty(propertyId);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()) {
+                    Log.d("onResponseDelFav", "All OK");
+                    getFavPropertiesFromCall(token);
+                } else
+                    Log.e("onRespDelFavError", "Something go very WRONG");
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("onFailureDelFav", t.getMessage());
             }
         });
     }

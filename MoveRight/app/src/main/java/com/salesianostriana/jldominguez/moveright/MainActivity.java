@@ -1,5 +1,7 @@
 package com.salesianostriana.jldominguez.moveright;
 
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,11 +18,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.salesianostriana.jldominguez.moveright.interfaces.FavPropertyInteractionListener;
 import com.salesianostriana.jldominguez.moveright.interfaces.MyPropertyInteractionListener;
 import com.salesianostriana.jldominguez.moveright.interfaces.PropertyInteractionListener;
 import com.salesianostriana.jldominguez.moveright.retrofit.UtilToken;
+import com.salesianostriana.jldominguez.moveright.viewModel.PropertyViewModel;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, PropertyInteractionListener, MyPropertyInteractionListener, FavPropertyInteractionListener {
@@ -30,6 +34,8 @@ public class MainActivity extends AppCompatActivity
     Fragment fProperty;
     Fragment fMyProperty;
     Fragment fFavProperty;
+
+    PropertyViewModel propertyViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +48,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                startActivity(new Intent(MainActivity.this, MapsActivity.class));
             }
         });
 
@@ -78,6 +83,8 @@ public class MainActivity extends AppCompatActivity
             navSignupManage.setVisible(false);
             navLogoutManage.setVisible(true);
         }
+
+        propertyViewModel = ViewModelProviders.of(this).get(PropertyViewModel.class);
 
         fProperty = new PropertyFragment();
 
@@ -167,7 +174,15 @@ public class MainActivity extends AppCompatActivity
 
     //METODO DE PROPERTY
     @Override
-    public void onClickFav() {
+    public void onClickFav(String propertyId) {
+        if(UtilToken.getToken(this) != null){
+            propertyViewModel.setFavProperty(UtilToken.getToken(MainActivity.this), propertyId);
+            Toast.makeText(MainActivity.this, "Property added to favourites", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(MainActivity.this, "You are not logged, please log in", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
 
     }
 
@@ -175,6 +190,29 @@ public class MainActivity extends AppCompatActivity
     public void onClickView(String propertyId) {
         Intent intent = new Intent(MainActivity.this, PropertyDetailsActivity.class);
         intent.putExtra("id", propertyId);
+        startActivity(intent);
+    }
+
+    //METODOS DE FAV PROPERTY
+    @Override
+    public void onClickDeleteFav(String id) {
+        propertyViewModel.deleteFavProperty(UtilToken.getToken(MainActivity.this), id);
+        Toast.makeText(MainActivity.this, "Property deleted of favourites", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onClickFavView(String id) {
+        Intent intent = new Intent(MainActivity.this, PropertyDetailsActivity.class);
+        intent.putExtra("id", id);
+        startActivity(intent);
+    }
+
+
+    //METODOS DE MY PROPERTY
+    @Override
+    public void onClickMyView(String id) {
+        Intent intent = new Intent(MainActivity.this, PropertyDetailsActivity.class);
+        intent.putExtra("id", id);
         startActivity(intent);
     }
 }

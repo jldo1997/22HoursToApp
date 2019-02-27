@@ -30,6 +30,7 @@
             android:id="@+id/ivFavMainImage"
             android:layout_width="0dp"
             android:layout_height="163dp"
+            android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -84,6 +85,25 @@
             app:layout_constraintStart_toEndOf="@+id/tvFavPrice"
             app:layout_constraintTop_toTopOf="@+id/tvFavPrice"
             app:srcCompat="@drawable/ic_euro_symbol_black_24dp"
+            tools:ignore="VectorDrawableCompat" />
+
+        <ImageButton
+            android:id="@+id/ibDeleteFav"
+            android:layout_width="43dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/roundedbutton"
+            app:layout_constraintBottom_toBottomOf="@+id/ivFavMainImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.931"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivFavMainImage"
+            app:layout_constraintVertical_bias="0.435"
+            app:srcCompat="@drawable/ic_like"
             tools:ignore="VectorDrawableCompat" />
 
     </android.support.constraint.ConstraintLayout>

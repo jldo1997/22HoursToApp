@@ -16,4 +16,5 @@
 
     <string name="sharedpreferences_filename">shared</string>
     <string name="jwt">JWT</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

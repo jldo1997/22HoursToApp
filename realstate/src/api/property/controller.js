@@ -56,7 +56,8 @@ let queryAllPhotos = (property) => {
           reject(err)
         }
         else {
-          let result = JSON.parse(JSON.stringify(property))          
+          let result = JSON.parse(JSON.stringify(property))   
+          result['loc'] = property.loc;       
           let images = photos.map((photo) => photo.imgurLink)
           result['photos'] = images
           resolve(result)
@@ -183,6 +184,7 @@ export const userFavorites = ({ user, querymen: { query, select, cursor } }, res
   Property
     .find(query, select, cursor)
     .populate('categoryId', 'name')
+    .populate('ownerId', 'name picture')
     .exec(function (err, properties){
         Promise.all(properties.map(function(property){
           return queryFirstPhoto(property)

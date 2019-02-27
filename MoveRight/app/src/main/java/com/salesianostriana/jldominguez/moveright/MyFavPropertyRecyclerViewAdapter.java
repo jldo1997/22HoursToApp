@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -44,12 +45,18 @@ public class MyFavPropertyRecyclerViewAdapter extends RecyclerView.Adapter<MyFav
             Glide.with(ctx).load(holder.mItem.getPhotos()[0]).into(holder.ivMainImage);
         }
 
+        holder.ibDeleteFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onClickDeleteFav(holder.mItem.getId());
+            }
+        });
+
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
+                   mListener.onClickFavView(holder.mItem.getId());
                 }
             }
         });
@@ -66,6 +73,7 @@ public class MyFavPropertyRecyclerViewAdapter extends RecyclerView.Adapter<MyFav
         public final TextView tvTitle;
         public final TextView tvRooms;
         public final TextView tvPrice;
+        public final ImageButton ibDeleteFav;
         public Property mItem;
 
         public ViewHolder(View view) {
@@ -75,6 +83,7 @@ public class MyFavPropertyRecyclerViewAdapter extends RecyclerView.Adapter<MyFav
             tvTitle = view.findViewById(R.id.tvFavTitle);
             tvRooms = view.findViewById(R.id.tvFavRooms);
             tvPrice = view.findViewById(R.id.tvFavPrice);
+            ibDeleteFav = view.findViewById(R.id.ibDeleteFav);
 
         }
 
