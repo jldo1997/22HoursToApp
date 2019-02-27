@@ -10,7 +10,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.salesianostriana.jldominguez.moveright.model.Property;
 import com.salesianostriana.jldominguez.moveright.viewModel.PropertyViewModel;
@@ -32,39 +34,53 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        viewModel = ViewModelProviders.of(this).get(PropertyViewModel.class);
-        viewModel.getAllProperties().observe(this, new Observer<List<Property>>() {
-            @Override
-            public void onChanged(@Nullable List<Property> properties) {
-                 for(Property p : properties)
-                     listLoc.add(p.getLoc());
-            }
-        });
+
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        for(String s : listLoc){
-            if(s.contains(", ")) {
-                String[] parts = s.split(", ");
-                double part1 = Double.parseDouble(parts[0]);
-                double part2 = Double.parseDouble(parts[1]);
-                LatLng temp = new LatLng(part1, part2);
+        viewModel = ViewModelProviders.of(this).get(PropertyViewModel.class);
+        viewModel.getAllProperties().observe(this, new Observer<List<Property>>() {
+            @Override
+            public void onChanged(@Nullable List<Property> properties) {
+                for(Property p : properties) {
 
-                mMap.addMarker(new MarkerOptions().position(temp));
-            } else {
-                String[] parts = s.split(",");
-                double part1 = Double.parseDouble(parts[0]);
-                double part2 = Double.parseDouble(parts[1]);
-                LatLng temp = new LatLng(part1, part2);
+                    if (!p.getLoc().isEmpty()){
+                        if (p.getLoc().contains(", ")) {
+                            String[] parts = p.getLoc().split(", ");
+                            double part1 = Double.parseDouble(parts[0]);
+                            double part2 = Double.parseDouble(parts[1]);
+                            LatLng temp = new LatLng(part1, part2);
 
-                mMap.addMarker(new MarkerOptions().position(temp));
+                            MarkerOptions optTemp = new MarkerOptions()
+                                                        .position(temp)
+                                                        .title(p.getTitle())
+                                                        .snippet(p.getDescription())
+                                                        .draggable(false);
+
+                            Marker marker = mMap.addMarker(optTemp);
+                            marker.showInfoWindow();
+
+
+                        } else {
+                            String[] parts = p.getLoc().split(",");
+                            double part1 = Double.parseDouble(parts[0]);
+                            double part2 = Double.parseDouble(parts[1]);
+                            LatLng temp = new LatLng(part1, part2);
+
+                            mMap.addMarker(new MarkerOptions().position(temp));
+                        }
+                }
+                }
+
+
             }
-        }
+        });
 
         LatLng test = new LatLng(37.383629,-6.002002);
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(test, 13));
+
     }
 }
