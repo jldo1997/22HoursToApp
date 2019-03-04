@@ -31,8 +31,11 @@
             android:value="@string/google_maps_key" />
 
         <activity
+            android:name=".SelectMapActivity"
+            android:label="@string/title_activity_select_map"></activity>
+        <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps" />
         <activity android:name=".PropertyDetailsActivity" />
         <activity
             android:name=".SignupActivity"

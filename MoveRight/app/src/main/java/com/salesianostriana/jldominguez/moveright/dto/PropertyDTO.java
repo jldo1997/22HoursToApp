@@ -6,6 +6,7 @@ public class PropertyDTO {
     private String description;
     private int price;
     private int rooms;
+    private int size;
     private String categoryId;
     private String address;
     private String zipcode;
@@ -16,17 +17,26 @@ public class PropertyDTO {
     public PropertyDTO() {
     }
 
-    public PropertyDTO(String title, String description, int price, int rooms, String categoryId, String address, String zipcode, String city, String province, String loc) {
+    public PropertyDTO(String title, String description, int price, int rooms, int size, String categoryId, String address, String zipcode, String city, String province, String loc) {
         this.title = title;
         this.description = description;
         this.price = price;
         this.rooms = rooms;
+        this.size = size;
         this.categoryId = categoryId;
         this.address = address;
         this.zipcode = zipcode;
         this.city = city;
         this.province = province;
         this.loc = loc;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
     }
 
     public String getTitle() {

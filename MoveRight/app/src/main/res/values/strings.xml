@@ -22,4 +22,5 @@
     <string name="pict">userPicture</string>
     <string name="role">role</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_select_map">Map</string>
 </resources>

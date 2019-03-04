@@ -32,6 +32,7 @@ public class PropertyDetailsActivity extends AppCompatActivity {
     private String propertyId;
     private PropertyViewModel viewModel;
     private Property property;
+    private String flag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,9 @@ public class PropertyDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_property_details);
 
         propertyId = getIntent().getStringExtra("id");
+        if(!getIntent().getStringExtra("flag").isEmpty()){
+            flag = getIntent().getStringExtra("flag");
+        }
 
         tvDetailTitle = findViewById(R.id.tvDetailTitle);
         tvDetailPrice = findViewById(R.id.tvDetailPrice);
@@ -59,10 +63,16 @@ public class PropertyDetailsActivity extends AppCompatActivity {
 
         launchViewModel();
 
+        if(flag == "true"){
+            ibDetailFab.setImageResource(R.drawable.ic_delete_forever_black_24dp);
+        }
+
         ibDetailFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(UtilToken.getToken(PropertyDetailsActivity.this) != null) {
+                if(flag == "true") {
+                    showDialogDelete();
+                } else if(UtilToken.getToken(PropertyDetailsActivity.this) != null) {
                     viewModel.setFavProperty(UtilToken.getToken(PropertyDetailsActivity.this), propertyId);
                     Toast.makeText(PropertyDetailsActivity.this, "Property added to favourites", Toast.LENGTH_LONG).show();
                 } else {
@@ -74,27 +84,7 @@ public class PropertyDetailsActivity extends AppCompatActivity {
         bDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(PropertyDetailsActivity.this);
-
-
-                builder.setMessage("All data will be deleted permanently")
-                        .setTitle("Delete property?")
-                        .setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                deleteProperty();
-                                finish();
-                            }
-                        })
-                        .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.dismiss();
-                            }
-                        });
-
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
-
+                showDialogDelete();
             }
         });
 
@@ -138,6 +128,29 @@ public class PropertyDetailsActivity extends AppCompatActivity {
 
     private void deleteProperty() {
         viewModel.deleteProperty(UtilToken.getToken(this));
+    }
+
+    private void showDialogDelete(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(PropertyDetailsActivity.this);
+
+
+        builder.setMessage("All data will be deleted permanently")
+                .setTitle("Delete property?")
+                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        deleteProperty();
+                        finish();
+                    }
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 }

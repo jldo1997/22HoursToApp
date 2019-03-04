@@ -1,5 +1,6 @@
 package com.salesianostriana.jldominguez.moveright;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
@@ -9,10 +10,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -23,7 +26,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,8 +39,13 @@ import com.salesianostriana.jldominguez.moveright.dto.PropertyDTO;
 import com.salesianostriana.jldominguez.moveright.interfaces.FavPropertyInteractionListener;
 import com.salesianostriana.jldominguez.moveright.interfaces.MyPropertyInteractionListener;
 import com.salesianostriana.jldominguez.moveright.interfaces.PropertyInteractionListener;
+import com.salesianostriana.jldominguez.moveright.model.Category;
 import com.salesianostriana.jldominguez.moveright.retrofit.UtilToken;
+import com.salesianostriana.jldominguez.moveright.viewModel.CategoryViewModel;
 import com.salesianostriana.jldominguez.moveright.viewModel.PropertyViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, PropertyInteractionListener, MyPropertyInteractionListener, FavPropertyInteractionListener {
@@ -47,8 +59,11 @@ public class MainActivity extends AppCompatActivity
     Fragment fFavProperty;
 
     PropertyViewModel propertyViewModel;
+    CategoryViewModel categoryViewModel;
 
     FloatingActionButton fab;
+
+    String loc = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +71,9 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        propertyViewModel = ViewModelProviders.of(this).get(PropertyViewModel.class);
+        categoryViewModel = ViewModelProviders.of(this).get(CategoryViewModel.class);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -65,26 +83,7 @@ public class MainActivity extends AppCompatActivity
                 if(temp instanceof PropertyFragment || temp instanceof FavPropertyFragment){
                     startActivity(new Intent(MainActivity.this, MapsActivity.class));
                 } else if (temp instanceof MyPropertyFragment) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                    LayoutInflater inflater = MainActivity.this.getLayoutInflater();
-
-                    builder.setView(inflater.inflate(R.layout.dialog_create_property, null))
-
-                            .setPositiveButton("Upload", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int id) {
-                                    //TODO RECUPERAR LAS COSAS DEL DIALOGO Y HACER UNA PETICION CON VIEWMODEL
-                                    propertyViewModel = ViewModelProviders.of(MainActivity.this).get(PropertyViewModel.class);
-                                    propertyViewModel.createProperty(UtilToken.getToken(MainActivity.this), new PropertyDTO());
-                                }
-                            })
-                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.dismiss();
-                                }
-                            });
-                    builder.create();
-
+                    showCreateDialog();
                 }
 
             }
@@ -140,10 +139,6 @@ public class MainActivity extends AppCompatActivity
         }
 
 
-
-
-        propertyViewModel = ViewModelProviders.of(this).get(PropertyViewModel.class);
-
         fProperty = new PropertyFragment();
 
         getSupportFragmentManager()
@@ -151,6 +146,33 @@ public class MainActivity extends AppCompatActivity
                 .replace(R.id.fragmentContainer, fProperty, "properties")
                 .commit();
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == Activity.RESULT_OK){
+                loc = data.getStringExtra("result");
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                Toast.makeText(MainActivity.this, "there is an error", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private void chargeSpinner(Spinner spinner) {
+        List<String> spinnerArray =  new ArrayList<String>();
+
+        for(Category c: categoryViewModel.getCategories().getValue()){
+            spinnerArray.add(c.getName());
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this, android.R.layout.simple_spinner_item, spinnerArray);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
     }
 
     @Override
@@ -251,6 +273,7 @@ public class MainActivity extends AppCompatActivity
     public void onClickView(String propertyId) {
         Intent intent = new Intent(MainActivity.this, PropertyDetailsActivity.class);
         intent.putExtra("id", propertyId);
+        intent.putExtra("flag", "false");
         startActivity(intent);
     }
 
@@ -265,6 +288,7 @@ public class MainActivity extends AppCompatActivity
     public void onClickFavView(String id) {
         Intent intent = new Intent(MainActivity.this, PropertyDetailsActivity.class);
         intent.putExtra("id", id);
+        intent.putExtra("flag", "false");
         startActivity(intent);
     }
 
@@ -274,6 +298,74 @@ public class MainActivity extends AppCompatActivity
     public void onClickMyView(String id) {
         Intent intent = new Intent(MainActivity.this, PropertyDetailsActivity.class);
         intent.putExtra("id", id);
+        intent.putExtra("flag", "true");
         startActivity(intent);
+    }
+
+    //METODO DEL DIALOGO PARA CREAR
+
+    public void showCreateDialog(){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        LayoutInflater inflater = MainActivity.this.getLayoutInflater();
+
+        View v = inflater.inflate(R.layout.dialog_create_property, null);
+        builder.setView(v);
+
+
+        Button bAddProperty = v.findViewById(R.id.bAddProperty);
+        final EditText etTitle = v.findViewById(R.id.etAddTitle);
+        final EditText etAddress = v.findViewById(R.id.etAddAddress);
+        final EditText etZip = v.findViewById(R.id.etAddZip);
+        final EditText etCity = v.findViewById(R.id.etAddCity);
+        final EditText etProv = v.findViewById(R.id.etAddProvince);
+        final EditText etRooms = v.findViewById(R.id.etAddRooms);
+        final EditText etSize = v.findViewById(R.id.etAddSize);
+        final EditText etPrice = v.findViewById(R.id.etAddPrice);
+        final EditText etDescrip = v.findViewById(R.id.etAddDescription);
+        final Spinner spinner = v.findViewById(R.id.catSpinner);
+        final Button bAddMap = v.findViewById(R.id.bAddLoc);
+
+        chargeSpinner(spinner);
+
+        final AlertDialog dialog = builder.create();
+        bAddProperty.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String title = etTitle.getText().toString();
+                String desc = etDescrip.getText().toString();
+                String address = etAddress.getText().toString();
+                String zip = etZip.getText().toString();
+                String city = etCity.getText().toString();
+                String prov = etProv.getText().toString();
+                int rooms = Integer.parseInt(etRooms.getText().toString());
+                int size = Integer.parseInt(etSize.getText().toString());
+                int price = Integer.parseInt(etPrice.getText().toString());
+
+                String selectedSpinner = spinner.getSelectedItem().toString();
+                Category temp = new Category();
+                for(Category c : categoryViewModel.getCategories().getValue()){
+                    if(c.getName() == selectedSpinner) {
+                        temp = c;
+                    }
+                }
+
+                PropertyDTO dto = new PropertyDTO(title, desc, price, rooms, size, temp.getId(),  address, zip, city, prov, loc);
+
+                propertyViewModel.createProperty(UtilToken.getToken(MainActivity.this), dto);
+                dialog.dismiss();
+            }
+        });
+
+        bAddMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Aviable in version 2.7.1", Toast.LENGTH_LONG).show();
+                //Intent intent = new Intent(MainActivity.this, SelectMapActivity.class);
+                //startActivityForResult(intent, 1);
+            }
+
+        });
+
+        dialog.show();
     }
 }
