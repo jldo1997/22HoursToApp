@@ -6,6 +6,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.salesianostriana.jldominguez.moveright.dto.PropertyDTO;
 import com.salesianostriana.jldominguez.moveright.model.BFContainer;
 import com.salesianostriana.jldominguez.moveright.model.Photo;
 import com.salesianostriana.jldominguez.moveright.model.Property;
@@ -25,12 +26,10 @@ import retrofit2.Response;
 public class PropertyViewModel extends AndroidViewModel {
 
     private PropertyService propertyService;
-    //private PhotosService photosService;
     private MutableLiveData<List<Property>> properties = new MutableLiveData<List<Property>>();
     private MutableLiveData<List<Property>> myProperties = new MutableLiveData<List<Property>>();
     private MutableLiveData<List<Property>> favProperties = new MutableLiveData<List<Property>>();
     private MutableLiveData<Property> propertyDetails = new MutableLiveData<Property>();
-    //private List<Photo> photos;
 
     public PropertyViewModel(@NonNull Application application) {
         super(application);
@@ -167,6 +166,48 @@ public class PropertyViewModel extends AndroidViewModel {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.e("onFailureDelFav", t.getMessage());
+            }
+        });
+    }
+
+    public void deleteProperty(String token){
+        propertyService = ServiceGenerator.createService(PropertyService.class, token);
+
+        Call<ResponseBody> call = propertyService.deleteProperty(getPropertyDetails().getValue().getId());
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()){
+                    Log.d("onResponse", "all OK");
+                } else {
+                    Log.e("responseNotSuccesfull", "something went WRONG");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("onFailureDeletePro", t.getMessage());
+            }
+        });
+    }
+
+    public void createProperty(String token, PropertyDTO dto){
+        propertyService = ServiceGenerator.createService(PropertyService.class, token);
+        Call<ResponseBody> call = propertyService.createProperty(dto);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful())
+                    Log.d("onResponse", "all ok");
+                else
+                    Log.e("onResFailure", "something went WRONG");
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("onFailure", t.getMessage());
             }
         });
     }

@@ -24,7 +24,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private PropertyViewModel viewModel;
-    private List<String> listLoc = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,30 +47,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 for(Property p : properties) {
 
                     if (!p.getLoc().isEmpty()){
+                        String[] parts;
                         if (p.getLoc().contains(", ")) {
-                            String[] parts = p.getLoc().split(", ");
-                            double part1 = Double.parseDouble(parts[0]);
-                            double part2 = Double.parseDouble(parts[1]);
-                            LatLng temp = new LatLng(part1, part2);
-
-                            MarkerOptions optTemp = new MarkerOptions()
-                                                        .position(temp)
-                                                        .title(p.getTitle())
-                                                        .snippet(p.getDescription())
-                                                        .draggable(false);
-
-                            Marker marker = mMap.addMarker(optTemp);
-                            marker.showInfoWindow();
-
-
+                            parts = p.getLoc().split(", ");
                         } else {
-                            String[] parts = p.getLoc().split(",");
-                            double part1 = Double.parseDouble(parts[0]);
-                            double part2 = Double.parseDouble(parts[1]);
-                            LatLng temp = new LatLng(part1, part2);
-
-                            mMap.addMarker(new MarkerOptions().position(temp));
+                            parts = p.getLoc().split(",");
                         }
+                        double part1 = Double.parseDouble(parts[0]);
+                        double part2 = Double.parseDouble(parts[1]);
+                        LatLng temp = new LatLng(part1, part2);
+
+                        MarkerOptions optTemp = new MarkerOptions()
+                                .position(temp)
+                                .title(p.getTitle())
+                                .snippet(p.getDescription())
+                                .draggable(false);
+
+                        Marker marker = mMap.addMarker(optTemp);
+                        marker.showInfoWindow();
                 }
                 }
 

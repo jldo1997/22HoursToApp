@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.salesianostriana.jldominguez.moveright.model.LoginResponse;
+import com.salesianostriana.jldominguez.moveright.model.User;
 import com.salesianostriana.jldominguez.moveright.retrofit.UtilToken;
 import com.salesianostriana.jldominguez.moveright.retrofit.generator.ServiceGenerator;
 import com.salesianostriana.jldominguez.moveright.retrofit.services.LoginService;
@@ -62,6 +63,8 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
 
                             UtilToken.setToken(LoginActivity.this, response.body().getToken());
+                            User temp = response.body().getUser();
+                            UtilToken.setUserData(LoginActivity.this, temp.getId(), temp.getPicture(), temp.getName(), temp.getEmail(), temp.getRole());
                             Log.d("Testing", response.body().getToken());
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             finish();

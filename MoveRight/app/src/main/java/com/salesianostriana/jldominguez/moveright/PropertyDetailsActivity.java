@@ -1,13 +1,16 @@
 package com.salesianostriana.jldominguez.moveright;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,6 +28,7 @@ public class PropertyDetailsActivity extends AppCompatActivity {
     TextView tvDetailTitle, tvDetailPrice, tvDetailLoc, tvDetailRooms, tvDetailSize, tvDetailDesc;
     ImageButton ibDetailFab;
     ImageView ivDetailPhotos;
+    Button bDelete, bEdit;
     private String propertyId;
     private PropertyViewModel viewModel;
     private Property property;
@@ -44,6 +48,14 @@ public class PropertyDetailsActivity extends AppCompatActivity {
         ibDetailFab = findViewById(R.id.ibDetailFab);
         ivDetailPhotos = findViewById(R.id.ivDetailPhotos);
         tvDetailDesc = findViewById(R.id.tvDetailDesc);
+        bDelete = findViewById(R.id.bDelete);
+        bEdit = findViewById(R.id.bEdit);
+
+        //PUEDE SER CAMBIADO A ADMIN SI NO SE QUIERE QUE LOS USUARIOS ELIMINEN Y EDITEN
+        if(UtilToken.getUserRole(this) != "admin"){
+            bEdit.setVisibility(View.GONE);
+            bDelete.setVisibility(View.GONE);
+        }
 
         launchViewModel();
 
@@ -59,7 +71,42 @@ public class PropertyDetailsActivity extends AppCompatActivity {
             }
         });
 
+        bDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(PropertyDetailsActivity.this);
+
+
+                builder.setMessage("All data will be deleted permanently")
+                        .setTitle("Delete property?")
+                        .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                deleteProperty();
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+            }
+        });
+
+        bEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
     }
+
     public void launchViewModel(){
         viewModel = ViewModelProviders.of(this).get(PropertyViewModel.class);
         viewModel.getPropertyDetailsFromCall(propertyId);
@@ -85,9 +132,12 @@ public class PropertyDetailsActivity extends AppCompatActivity {
         tvDetailRooms.setText(Integer.toString(property.getRooms()));
         tvDetailSize.setText(Integer.toString(property.getSize()));
 
+        if(property.getPhotos() != null)
         Glide.with(PropertyDetailsActivity.this).load(property.getPhotos()[0]).into(ivDetailPhotos);
+    }
 
-
+    private void deleteProperty() {
+        viewModel.deleteProperty(UtilToken.getToken(this));
     }
 
 }

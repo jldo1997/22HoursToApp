@@ -33,4 +33,75 @@ public class UtilToken {
         return jwt;
     }
 
+    public static void setUserData(Context mContext, String userId, String pict, String username, String email, String role){
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(mContext.getString(R.string.sharedpreferences_filename), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(mContext.getString(R.string.userId), userId);
+        editor.putString(mContext.getString(R.string.pict), pict);
+        editor.putString(mContext.getString(R.string.username), username);
+        editor.putString(mContext.getString(R.string.userEmail), email);
+        editor.putString(mContext.getString(R.string.role), role);
+        editor.commit();
+    }
+
+    public static String getUserId(Context mContext) {
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(
+                mContext.getString(R.string.sharedpreferences_filename),
+                Context.MODE_PRIVATE
+        );
+
+        String s = sharedPreferences
+                .getString(mContext.getString(R.string.userId), null);
+
+        return s;
+    }
+
+    public static String getPict(Context mContext) {
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(
+                mContext.getString(R.string.sharedpreferences_filename),
+                Context.MODE_PRIVATE
+        );
+
+        String s = sharedPreferences
+                .getString(mContext.getString(R.string.pict), null);
+
+        return s;
+    }
+
+    public static String getUsername(Context mContext) {
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(
+                mContext.getString(R.string.sharedpreferences_filename),
+                Context.MODE_PRIVATE
+        );
+
+        String s = sharedPreferences
+                .getString(mContext.getString(R.string.username), null);
+
+        return s;
+    }
+
+    public static String getUserEmail(Context mContext) {
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(
+                mContext.getString(R.string.sharedpreferences_filename),
+                Context.MODE_PRIVATE
+        );
+
+        String s = sharedPreferences
+                .getString(mContext.getString(R.string.userEmail), null);
+
+        return s;
+    }
+
+    public static String getUserRole(Context mContext) {
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(
+                mContext.getString(R.string.sharedpreferences_filename),
+                Context.MODE_PRIVATE
+        );
+
+        String s = sharedPreferences
+                .getString(mContext.getString(R.string.role), null);
+
+        return s;
+    }
+
 }

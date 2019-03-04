@@ -1,14 +1,19 @@
 package com.salesianostriana.jldominguez.moveright;
 
+import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,8 +23,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.salesianostriana.jldominguez.moveright.dto.PropertyDTO;
 import com.salesianostriana.jldominguez.moveright.interfaces.FavPropertyInteractionListener;
 import com.salesianostriana.jldominguez.moveright.interfaces.MyPropertyInteractionListener;
 import com.salesianostriana.jldominguez.moveright.interfaces.PropertyInteractionListener;
@@ -30,12 +39,16 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, PropertyInteractionListener, MyPropertyInteractionListener, FavPropertyInteractionListener {
 
     MenuItem navPropertiesManage, navFavManage, navMyProManage, navLoginManage, navSignupManage, navLogoutManage;
+    TextView tvUserName, tvUserEmail;
+    ImageView ivUserPict;
 
     Fragment fProperty;
     Fragment fMyProperty;
     Fragment fFavProperty;
 
     PropertyViewModel propertyViewModel;
+
+    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +57,40 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, MapsActivity.class));
-            }
-        });
+                Fragment temp = MainActivity.this.getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
+                if(temp instanceof PropertyFragment || temp instanceof FavPropertyFragment){
+                    startActivity(new Intent(MainActivity.this, MapsActivity.class));
+                } else if (temp instanceof MyPropertyFragment) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    LayoutInflater inflater = MainActivity.this.getLayoutInflater();
 
+                    builder.setView(inflater.inflate(R.layout.dialog_create_property, null))
+
+                            .setPositiveButton("Upload", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int id) {
+                                    //TODO RECUPERAR LAS COSAS DEL DIALOGO Y HACER UNA PETICION CON VIEWMODEL
+                                    propertyViewModel = ViewModelProviders.of(MainActivity.this).get(PropertyViewModel.class);
+                                    propertyViewModel.createProperty(UtilToken.getToken(MainActivity.this), new PropertyDTO());
+                                }
+                            })
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    builder.create();
+
+                }
+
+            }
+
+
+        });
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -60,6 +99,12 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View hView = navigationView.getHeaderView(0);
+
+        tvUserEmail = hView.findViewById(R.id.tvEmail);
+        tvUserName = hView.findViewById(R.id.tvUserName);
+        ivUserPict = hView.findViewById(R.id.ivUserPicture);
 
         navPropertiesManage = navigationView.getMenu().findItem(R.id.nav_properties);
         navFavManage = navigationView.getMenu().findItem(R.id.nav_favproperties);
@@ -82,7 +127,20 @@ public class MainActivity extends AppCompatActivity
             navLoginManage.setVisible(false);
             navSignupManage.setVisible(false);
             navLogoutManage.setVisible(true);
+            if(UtilToken.getUsername(this)!=null && UtilToken.getUserEmail(this) != null && UtilToken.getPict(this) != null ) {
+
+                String tempUsername = UtilToken.getUsername(this);
+                String tempEmail = UtilToken.getUserEmail(this);
+                String tempPic = UtilToken.getPict(this);
+
+                tvUserName.setText(tempUsername);
+                tvUserEmail.setText(tempEmail);
+                Glide.with(this).load(tempPic).into(ivUserPict);
+            }
         }
+
+
+
 
         propertyViewModel = ViewModelProviders.of(this).get(PropertyViewModel.class);
 
@@ -139,18 +197,21 @@ public class MainActivity extends AppCompatActivity
                     .beginTransaction()
                     .replace(R.id.fragmentContainer, fProperty, "properties")
                     .commit();
+            fab.setImageResource(R.drawable.ic_map_black_24dp);
         } else if (id == R.id.nav_myproperties) {
             fMyProperty = new MyPropertyFragment();
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragmentContainer, fMyProperty, "myProperties")
                     .commit();
+            fab.setImageResource(R.drawable.ic_add_black_24dp);
         } else if (id == R.id.nav_favproperties) {
             fFavProperty = new FavPropertyFragment();
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragmentContainer, fFavProperty, "myProperties")
                     .commit();
+            fab.setImageResource(R.drawable.ic_map_black_24dp);
         } else if (id == R.id.nav_login) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
